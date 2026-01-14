@@ -1,0 +1,60 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:show": "ts-node --project tsconfig.migration.json src/database/show-migrations.ts",
+    "migration:run": "ts-node --project tsconfig.migration.json src/database/run-migration.ts",
+    "migration:revert": "ts-node --project tsconfig.migration.json src/database/revert-migration.ts",
+    "migration:new": "node src/scripts/create-migration.js",
+    "seed:run": "ts-node --project tsconfig.migration.json src/database/seeds/run-seed.ts"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "webpack-cli build",
+          "args": [
+            "--node-env=production"
+          ],
+          "cwd": "backend"
+        },
+        "configurations": {
+          "development": {
+            "args": [
+              "--node-env=development"
+            ]
+          }
+        }
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "backend:build",
+          "runBuildTargetDependencies": false
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@nestjs/mapped-types": "*",
+    "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.3",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typeorm-ts-node-commonjs": "^0.3.20"
+  }
+}
