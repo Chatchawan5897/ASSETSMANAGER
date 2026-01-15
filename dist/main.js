@@ -180,7 +180,7 @@ var exports = __webpack_exports__;
  * This is only a minimal backend to get started.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const common_1 = __webpack_require__(1);
+const common_1 = __webpack_require__(1); // ⬅️ (1) เพิ่ม ValidationPipe
 const core_1 = __webpack_require__(2);
 const swagger_1 = __webpack_require__(3);
 const dotenv_1 = __webpack_require__(4);
@@ -189,6 +189,12 @@ const app_module_1 = __webpack_require__(5);
 (0, dotenv_1.config)();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    //(2) เพิ่ม Global ValidationPipe ตรงนี้
+    app.useGlobalPipes(new common_1.ValidationPipe({
+        whitelist: true, // ลบ field ที่ไม่มีใน DTO
+        forbidNonWhitelisted: true, // ส่ง field แปลกมา → error
+        transform: true, // แปลง type อัตโนมัติ
+    }));
     const globalPrefix = 'api';
     app.setGlobalPrefix(globalPrefix);
     // Swagger Setup
