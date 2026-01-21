@@ -15,7 +15,11 @@ config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //(2) เพิ่ม Global ValidationPipe ตรงนี้
+  app.enableCors({
+    origin: '*', // ปรับเป็น URL ของ frontend ใน production
+    credentials: true,
+  });
+  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,           // ลบ field ที่ไม่มีใน DTO

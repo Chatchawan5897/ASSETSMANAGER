@@ -14,18 +14,17 @@ import { UsersDepartment } from '../../users-departments/entities/users-departme
 @Entity('md_departments')
 @Index('IDX_departments_code', ['code'], { unique: true })
 export class Department {
-  
   @PrimaryGeneratedColumn('uuid')
   id!: string; // <-- ใส่ ! บอก TS ว่ามันจะมีค่าแน่นอน
 
-  @Column({ type: 'varchar', length: 100, unique: true })
-  code!: string;
+  @Column({ type: 'varchar', length: 100, unique: true, nullable: true })
+  code?: string;
 
-  @Column({ type: 'varchar', length: 150 })
-  name_th!: string;
+  @Column({ type: 'varchar', length: 150, nullable: true })
+  name_th?: string;
 
-  @Column({ type: 'varchar', length: 150 })
-  name_en!: string;
+  @Column({ type: 'varchar', length: 150, nullable: true })
+  name_en?: string;
 
   @Column({ type: 'boolean', default: true })
   is_active!: boolean;
@@ -39,19 +38,27 @@ export class Department {
   @Column({ type: 'uuid', nullable: true })
   deleted_by?: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp',
+    nullable: true,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   created_at?: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp',
+    nullable: true,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   updated_at?: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({
+    nullable: true,
+  })
   deleted_at?: Date; // nullable
 
-  @OneToMany(
-    () => UsersDepartment,
-    (ud) => ud.department_id,
-  )
+  @OneToMany(() => UsersDepartment, (ud) => ud.department_id)
   userDepartments!: UsersDepartment[];
-  
 }

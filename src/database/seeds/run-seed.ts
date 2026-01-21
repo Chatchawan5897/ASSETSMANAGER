@@ -7,6 +7,8 @@ import { seedDepartments } from './department.seeder';
 import { seedUsersDepartments } from './users-departments.seeder';
 import { seedPermissions } from './permission.seeder';
 import { seedRolesPermissions } from './roles-permissions.seeder';
+import { seedTeams } from './teams.seeder';
+import { seedItems } from './items.seeder';
 
 async function runSeeds() {
   const startTime = Date.now();
@@ -26,7 +28,8 @@ async function runSeeds() {
     await seedUsersDepartments();
     await seedPermissions();
     await seedRolesPermissions();
-
+    await seedTeams();
+    await seedItems();
 
     await AppDataSource.destroy();
 

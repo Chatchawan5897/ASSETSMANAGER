@@ -1,7 +1,7 @@
 import { AppDataSource } from '../data-source';
 import { User } from '../../modules/users/entities/user.entity';
-import * as bcrypt from 'bcrypt';
-
+// import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 export async function seedUsers() {
   console.log('🌱 Seeding users...');
   const startTime = Date.now();
